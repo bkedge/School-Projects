@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+    <head><title>ClientWindow.java</title></head>
+    <body><!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.awt.BorderLayout</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.awt.EventQueue</span><span style="color: #333333">;</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.*</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.URI</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.URISyntaxException</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">org.apache.http.client.methods.CloseableHttpResponse</span><span style="color: #333333">;</span>  
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">org.apache.http.client.methods.HttpUriRequest</span><span style="color: #333333">;</span> 
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">org.apache.http.client.methods.RequestBuilder</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">org.apache.http.impl.client.CloseableHttpClient</span><span style="color: #333333">;</span>  
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">org.apache.http.impl.client.HttpClients</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">org.apache.http.util.EntityUtils</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.util.regex.Pattern</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.util.regex.Matcher</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.URLEncoder</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.util.logging.Level</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.util.logging.Logger</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">org.apache.http.ParseException</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.swing.*</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.swing.JFrame</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.swing.JPanel</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.swing.border.EmptyBorder</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.swing.JTextField</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.swing.JLabel</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.swing.SwingConstants</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.awt.Font</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.servlet.ServletException</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.servlet.annotation.WebServlet</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.servlet.http.HttpServlet</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.servlet.http.HttpServletRequest</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">javax.servlet.http.HttpServletResponse</span><span style="color: #333333">;</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.sql.*</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.awt.Color</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.awt.event.ActionListener</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.awt.event.ActionEvent</span><span style="color: #333333">;</span>
+
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">ClientWindow</span> <span style="color: #008800; font-weight: bold">extends</span> JFrame <span style="color: #333333">{</span>
+
+	<span style="color: #008800; font-weight: bold">private</span> JPanel contentPane<span style="color: #333333">;</span>
+	<span style="color: #008800; font-weight: bold">private</span> JTextField textFieldTeam<span style="color: #333333">;</span>
+	<span style="color: #008800; font-weight: bold">private</span> JTextField textFieldPlayer<span style="color: #333333">;</span>
+	<span style="color: #008800; font-weight: bold">private</span> JTextField textFieldGoals<span style="color: #333333">;</span>
+	<span style="color: #008800; font-weight: bold">private</span> JTextField textFieldAssists<span style="color: #333333">;</span>
+	<span style="color: #008800; font-weight: bold">private</span> <span style="color: #008800; font-weight: bold">final</span> ButtonGroup buttonGroup <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ButtonGroup<span style="color: #333333">();</span>
+
+	<span style="color: #888888">/**</span>
+<span style="color: #888888">	 * Launch the application.</span>
+<span style="color: #888888">	 */</span>
+	<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">main</span><span style="color: #333333">(</span>String<span style="color: #333333">[]</span> args<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+		EventQueue<span style="color: #333333">.</span><span style="color: #0000CC">invokeLater</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Runnable<span style="color: #333333">()</span> <span style="color: #333333">{</span>
+			<span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">run</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+				<span style="color: #008800; font-weight: bold">try</span> <span style="color: #333333">{</span>
+					ClientWindow frame <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ClientWindow<span style="color: #333333">();</span>
+					frame<span style="color: #333333">.</span><span style="color: #0000CC">setVisible</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">true</span><span style="color: #333333">);</span>
+				<span style="color: #333333">}</span> <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>Exception e<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+					e<span style="color: #333333">.</span><span style="color: #0000CC">printStackTrace</span><span style="color: #333333">();</span>
+				<span style="color: #333333">}</span>
+			<span style="color: #333333">}</span>
+		<span style="color: #333333">});</span>
+	<span style="color: #333333">}</span>
+
+	<span style="color: #888888">/**</span>
+<span style="color: #888888">	 * Create the frame.</span>
+<span style="color: #888888">	 */</span>
+	<span style="color: #008800; font-weight: bold">public</span> <span style="color: #0066BB; font-weight: bold">ClientWindow</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+		setDefaultCloseOperation<span style="color: #333333">(</span>JFrame<span style="color: #333333">.</span><span style="color: #0000CC">EXIT_ON_CLOSE</span><span style="color: #333333">);</span>
+		setBounds<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">100</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">100</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">626</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">771</span><span style="color: #333333">);</span>
+		contentPane <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JPanel<span style="color: #333333">();</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">setBorder</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> EmptyBorder<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">));</span>
+		setContentPane<span style="color: #333333">(</span>contentPane<span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">setLayout</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">null</span><span style="color: #333333">);</span>
+		
+		<span style="color: #888888">//TITLE</span>
+		JLabel lblNewLabel <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JLabel<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Stats Updater&quot;</span><span style="color: #333333">);</span>
+		lblNewLabel<span style="color: #333333">.</span><span style="color: #0000CC">setFont</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Font<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Tahoma&quot;</span><span style="color: #333333">,</span> Font<span style="color: #333333">.</span><span style="color: #0000CC">PLAIN</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">18</span><span style="color: #333333">));</span>
+		lblNewLabel<span style="color: #333333">.</span><span style="color: #0000CC">setHorizontalAlignment</span><span style="color: #333333">(</span>SwingConstants<span style="color: #333333">.</span><span style="color: #0000CC">CENTER</span><span style="color: #333333">);</span>
+		lblNewLabel<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">227</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">11</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">130</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">34</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>lblNewLabel<span style="color: #333333">);</span>
+		
+		<span style="color: #888888">//TEXTFIELDS</span>
+		textFieldTeam <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JTextField<span style="color: #333333">();</span>
+		textFieldTeam<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">157</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">158</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">34</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>textFieldTeam<span style="color: #333333">);</span>
+		textFieldTeam<span style="color: #333333">.</span><span style="color: #0000CC">setColumns</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">);</span>
+		
+		textFieldPlayer <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JTextField<span style="color: #333333">();</span>
+		textFieldPlayer<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">205</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">157</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">158</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">34</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>textFieldPlayer<span style="color: #333333">);</span>
+		textFieldPlayer<span style="color: #333333">.</span><span style="color: #0000CC">setColumns</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">);</span>
+		
+		textFieldGoals <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JTextField<span style="color: #333333">();</span>
+		textFieldGoals<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">401</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">157</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">46</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">34</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>textFieldGoals<span style="color: #333333">);</span>
+		textFieldGoals<span style="color: #333333">.</span><span style="color: #0000CC">setColumns</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">);</span>
+		
+		textFieldAssists <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JTextField<span style="color: #333333">();</span>
+		textFieldAssists<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">489</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">157</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">46</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">34</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>textFieldAssists<span style="color: #333333">);</span>
+		textFieldAssists<span style="color: #333333">.</span><span style="color: #0000CC">setColumns</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">);</span>
+		
+		<span style="color: #888888">//LABELS</span>
+		JLabel lblTeam <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JLabel<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Team&quot;</span><span style="color: #333333">);</span>
+		lblTeam<span style="color: #333333">.</span><span style="color: #0000CC">setHorizontalAlignment</span><span style="color: #333333">(</span>SwingConstants<span style="color: #333333">.</span><span style="color: #0000CC">CENTER</span><span style="color: #333333">);</span>
+		lblTeam<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">70</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">132</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">46</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">14</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>lblTeam<span style="color: #333333">);</span>
+		
+		JLabel lblPlayer <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JLabel<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Player&quot;</span><span style="color: #333333">);</span>
+		lblPlayer<span style="color: #333333">.</span><span style="color: #0000CC">setHorizontalAlignment</span><span style="color: #333333">(</span>SwingConstants<span style="color: #333333">.</span><span style="color: #0000CC">CENTER</span><span style="color: #333333">);</span>
+		lblPlayer<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">264</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">132</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">46</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">14</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>lblPlayer<span style="color: #333333">);</span>
+		
+		JLabel lblGoals <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JLabel<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Goals&quot;</span><span style="color: #333333">);</span>
+		lblGoals<span style="color: #333333">.</span><span style="color: #0000CC">setHorizontalAlignment</span><span style="color: #333333">(</span>SwingConstants<span style="color: #333333">.</span><span style="color: #0000CC">CENTER</span><span style="color: #333333">);</span>
+		lblGoals<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">401</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">132</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">46</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">14</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>lblGoals<span style="color: #333333">);</span>
+		
+		JLabel lblAssists <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JLabel<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Assists&quot;</span><span style="color: #333333">);</span>
+		lblAssists<span style="color: #333333">.</span><span style="color: #0000CC">setHorizontalAlignment</span><span style="color: #333333">(</span>SwingConstants<span style="color: #333333">.</span><span style="color: #0000CC">CENTER</span><span style="color: #333333">);</span>
+		lblAssists<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">489</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">132</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">46</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">14</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>lblAssists<span style="color: #333333">);</span>
+		
+		<span style="color: #888888">//BUTTONS</span>
+		JRadioButton rdbtnAdd <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JRadioButton<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Add&quot;</span><span style="color: #333333">);</span>
+		buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnAdd<span style="color: #333333">);</span>
+		rdbtnAdd<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">174</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">228</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">68</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">23</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnAdd<span style="color: #333333">);</span>
+		rdbtnAdd<span style="color: #333333">.</span><span style="color: #0000CC">setActionCommand</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Add&quot;</span><span style="color: #333333">);</span>
+		
+		JRadioButton rdbtnDelete <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JRadioButton<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Delete&quot;</span><span style="color: #333333">);</span>
+		buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnDelete<span style="color: #333333">);</span>
+		rdbtnDelete<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">266</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">228</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">68</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">23</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnDelete<span style="color: #333333">);</span>
+		rdbtnDelete<span style="color: #333333">.</span><span style="color: #0000CC">setActionCommand</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Delete&quot;</span><span style="color: #333333">);</span>
+		
+		JRadioButton rdbtnDisplay <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JRadioButton<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Display&quot;</span><span style="color: #333333">);</span>
+		buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnDisplay<span style="color: #333333">);</span>
+		rdbtnDisplay<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">352</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">228</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">68</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">23</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnDisplay<span style="color: #333333">);</span>
+		rdbtnDisplay<span style="color: #333333">.</span><span style="color: #0000CC">setActionCommand</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Display&quot;</span><span style="color: #333333">);</span>
+		
+		JRadioButton rdbtnUpdate <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JRadioButton<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Update&quot;</span><span style="color: #333333">);</span>
+		buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnUpdate<span style="color: #333333">);</span>
+		rdbtnUpdate<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">439</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">228</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">109</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">23</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>rdbtnUpdate<span style="color: #333333">);</span>
+		rdbtnUpdate<span style="color: #333333">.</span><span style="color: #0000CC">setActionCommand</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Update&quot;</span><span style="color: #333333">);</span>
+		
+		JTextPane textPane <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JTextPane<span style="color: #333333">();</span>
+		textPane<span style="color: #333333">.</span><span style="color: #0000CC">setEditable</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">false</span><span style="color: #333333">);</span>
+		textPane<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">322</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">577</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">399</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>textPane<span style="color: #333333">);</span>
+		
+		
+		JButton btnSubmit <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JButton<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Submit&quot;</span><span style="color: #333333">);</span>
+		buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>btnSubmit<span style="color: #333333">);</span>
+		btnSubmit<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">245</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">276</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">89</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">23</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>btnSubmit<span style="color: #333333">);</span>
+		
+		JTextArea txtrAddFillAll <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> JTextArea<span style="color: #333333">();</span>
+		txtrAddFillAll<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Add: Fill all fields \r\nDelete: Fill Team and Player fields. \r\nDisplay: Enter at least Player name   Update: Enter new data into all fields \r\n(Use display to find out stats, then add to this and enter new total)&quot;</span><span style="color: #333333">);</span>
+		txtrAddFillAll<span style="color: #333333">.</span><span style="color: #0000CC">setEditable</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">false</span><span style="color: #333333">);</span>
+		txtrAddFillAll<span style="color: #333333">.</span><span style="color: #0000CC">setBounds</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">41</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">577</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">80</span><span style="color: #333333">);</span>
+		contentPane<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span>txtrAddFillAll<span style="color: #333333">);</span>
+		
+		<span style="color: #888888">//SUBMIT BUTTON -- ALL ACTION GOES ON HERE</span>
+		btnSubmit<span style="color: #333333">.</span><span style="color: #0000CC">addActionListener</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> ActionListener<span style="color: #333333">()</span> <span style="color: #333333">{</span>
+			<span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">actionPerformed</span><span style="color: #333333">(</span>ActionEvent arg0<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+				<span style="color: #888888">//add declarations</span>
+				
+				
+				String parts<span style="color: #333333">;</span>
+				String<span style="color: #333333">[]</span> records<span style="color: #333333">;</span>
+				String results<span style="color: #333333">;</span>
+				
+				String team<span style="color: #333333">;</span>
+				String player<span style="color: #333333">;</span>
+				String goals<span style="color: #333333">;</span>
+				String assists<span style="color: #333333">;</span>
+				String request1 <span style="color: #333333">=</span> buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">getSelection</span><span style="color: #333333">().</span><span style="color: #0000CC">getActionCommand</span><span style="color: #333333">();</span>
+				String status<span style="color: #333333">;</span>
+				
+				textPane<span style="color: #333333">.</span><span style="color: #0000CC">setContentType</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;text/html&quot;</span><span style="color: #333333">);</span><span style="color: #888888">//Sets Text pane to work with html tags</span>
+				
+				
+				
+				String response <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&quot;</span><span style="color: #333333">;</span>
+				String printresults<span style="color: #333333">;</span>
+				
+			<span style="color: #888888">//Cases	</span>
+			<span style="color: #008800; font-weight: bold">switch</span><span style="color: #333333">(</span>request1<span style="color: #333333">){</span>
+					
+				<span style="color: #008800; font-weight: bold">case</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Add&quot;</span><span style="color: #333333">):</span>
+					team <span style="color: #333333">=</span> textFieldTeam<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					player <span style="color: #333333">=</span> textFieldPlayer<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					goals <span style="color: #333333">=</span> textFieldGoals<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					assists <span style="color: #333333">=</span> textFieldAssists<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					request1 <span style="color: #333333">=</span> buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">getSelection</span><span style="color: #333333">().</span><span style="color: #0000CC">getActionCommand</span><span style="color: #333333">();</span>
+					
+					<span style="color: #888888">//Dont add data if a field is empty</span>
+					<span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>team<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()&lt;</span><span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #333333">||</span> player<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()&lt;</span><span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #333333">||</span> goals<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()&lt;</span><span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #333333">||</span> assists<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()&lt;</span><span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">){</span>
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;Could not Add&lt;/h1&gt;&lt;br&gt;&lt;h2&gt;Make sure you are entering data into all the fields&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">);</span>
+					<span style="color: #333333">}</span><span style="color: #008800; font-weight: bold">else</span><span style="color: #333333">{</span>
+					
+					status <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ServletConnect<span style="color: #333333">().</span><span style="color: #0000CC">addDataServlet</span><span style="color: #333333">(</span>team<span style="color: #333333">,</span> player<span style="color: #333333">,</span> goals<span style="color: #333333">,</span> assists<span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;Add&quot;</span><span style="color: #333333">);</span>
+					results <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h2&gt;Added to Database: &lt;table style=\&quot;width:100%\&quot;&gt;&lt;tr&gt;&lt;th&gt;Team&lt;/th&gt;&lt;th&gt;Player&lt;/th&gt;&lt;th&gt;Goals&lt;/th&gt;&lt;th&gt;Assists&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&quot;</span><span style="color: #333333">;</span>
+					records <span style="color: #333333">=</span> status<span style="color: #333333">.</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;-NeXt-&quot;</span><span style="color: #333333">);</span>
+					
+					<span style="color: #888888">//Get strings</span>
+					<span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i<span style="color: #333333">&lt;</span>records<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++</span> <span style="color: #333333">){</span>
+						System<span style="color: #333333">.</span><span style="color: #0000CC">out</span><span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]);</span>
+						results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;td&gt;&lt;center&gt;&quot;</span><span style="color: #333333">+</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]+</span><span style="background-color: #fff0f0">&quot;&lt;/center&gt;&lt;/td&gt;&quot;</span><span style="color: #333333">;</span>
+					<span style="color: #333333">}</span>
+					
+					results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;tr&gt;&lt;/table&gt;&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">;</span>
+					
+					textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span>results<span style="color: #333333">);</span>
+					
+					<span style="color: #333333">}</span>
+					
+					
+					<span style="color: #888888">//textPane.setText(&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;Added:&lt;/h1&gt;&lt;/center&gt;&lt;br&gt;&lt;center&gt;&quot;+status+&quot;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
+				<span style="color: #008800; font-weight: bold">break</span><span style="color: #333333">;</span>
+				
+				<span style="color: #008800; font-weight: bold">case</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Delete&quot;</span><span style="color: #333333">):</span>
+					team <span style="color: #333333">=</span> textFieldTeam<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					player <span style="color: #333333">=</span> textFieldPlayer<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					goals <span style="color: #333333">=</span> textFieldGoals<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					assists <span style="color: #333333">=</span> textFieldAssists<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					request1 <span style="color: #333333">=</span> buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">getSelection</span><span style="color: #333333">().</span><span style="color: #0000CC">getActionCommand</span><span style="color: #333333">();</span>
+				
+					<span style="color: #888888">//Dont delete data if team or player is empty or they enter goals or assists value</span>
+					<span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>team<span style="color: #333333">.</span><span style="color: #0000CC">isEmpty</span><span style="color: #333333">()</span> <span style="color: #333333">||</span> player<span style="color: #333333">.</span><span style="color: #0000CC">isEmpty</span><span style="color: #333333">()){</span>
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;Could not Delete&lt;/h1&gt;&lt;br&gt;&lt;h2&gt;Make sure you only enter in the team name and player for deleting&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">);</span>
+					<span style="color: #333333">}</span>
+					<span style="color: #008800; font-weight: bold">else</span> <span style="color: #0066BB; font-weight: bold">if</span><span style="color: #333333">(!</span>goals<span style="color: #333333">.</span><span style="color: #0000CC">isEmpty</span><span style="color: #333333">()</span> <span style="color: #333333">||</span> <span style="color: #333333">!</span>assists<span style="color: #333333">.</span><span style="color: #0000CC">isEmpty</span><span style="color: #333333">()){</span>
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;Could not Delete&lt;/h1&gt;&lt;br&gt;&lt;h2&gt;Make sure you only enter in the team name and player for deleting&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">);</span>
+					<span style="color: #333333">}</span><span style="color: #008800; font-weight: bold">else</span><span style="color: #333333">{</span>
+				
+						status <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ServletConnect<span style="color: #333333">().</span><span style="color: #0000CC">deleteDataServlet</span><span style="color: #333333">(</span>team<span style="color: #333333">,</span> player<span style="color: #333333">,</span> goals<span style="color: #333333">,</span> assists<span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;Delete&quot;</span><span style="color: #333333">);</span>
+						results <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h2&gt;Deleted Stats from Database: &lt;table style=\&quot;width:100%\&quot;&gt;&lt;tr&gt;&lt;th&gt;Team&lt;/th&gt;&lt;th&gt;Player&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&quot;</span><span style="color: #333333">;</span>
+						records <span style="color: #333333">=</span> status<span style="color: #333333">.</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;-NeXt-&quot;</span><span style="color: #333333">);</span>
+				
+				
+						<span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i<span style="color: #333333">&lt;</span>records<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++</span> <span style="color: #333333">){</span>
+							System<span style="color: #333333">.</span><span style="color: #0000CC">out</span><span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]);</span>
+							results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;td&gt;&lt;center&gt;&quot;</span><span style="color: #333333">+</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]+</span><span style="background-color: #fff0f0">&quot;&lt;/center&gt;&lt;/td&gt;&quot;</span><span style="color: #333333">;</span>
+						<span style="color: #333333">}</span>
+				
+						results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;tr&gt;&lt;/table&gt;&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">;</span>
+				
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span>results<span style="color: #333333">);</span>
+				
+					<span style="color: #333333">}</span>
+					System<span style="color: #333333">.</span><span style="color: #0000CC">out</span><span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;DELETE&quot;</span><span style="color: #333333">);</span>
+				<span style="color: #008800; font-weight: bold">break</span><span style="color: #333333">;</span>
+				
+				<span style="color: #008800; font-weight: bold">case</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Display&quot;</span><span style="color: #333333">):</span>
+					team <span style="color: #333333">=</span> textFieldTeam<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					player <span style="color: #333333">=</span> textFieldPlayer<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					goals <span style="color: #333333">=</span> textFieldGoals<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					assists <span style="color: #333333">=</span> textFieldAssists<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					request1 <span style="color: #333333">=</span> buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">getSelection</span><span style="color: #333333">().</span><span style="color: #0000CC">getActionCommand</span><span style="color: #333333">();</span>
+				
+					<span style="color: #888888">//Dont add data if a field is empty</span>
+					<span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>player<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()&lt;</span><span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">){</span>
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;Could not Display&lt;/h1&gt;&lt;br&gt;&lt;h2&gt;Make sure you are entering data into the team and player fields&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">);</span>
+					<span style="color: #333333">}</span><span style="color: #008800; font-weight: bold">else</span><span style="color: #333333">{</span>
+				
+						status <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ServletConnect<span style="color: #333333">().</span><span style="color: #0000CC">displayDataServlet</span><span style="color: #333333">(</span>team<span style="color: #333333">,</span> player<span style="color: #333333">,</span> goals<span style="color: #333333">,</span> assists<span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;Display&quot;</span><span style="color: #333333">);</span>
+						results <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h2&gt;DataBase Results: &lt;table style=\&quot;width:100%\&quot;&gt;&lt;tr&gt;&lt;th&gt;Team&lt;/th&gt;&lt;th&gt;Player&lt;/th&gt;&lt;th&gt;Goals&lt;/th&gt;&lt;th&gt;Assists&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&quot;</span><span style="color: #333333">;</span>
+						records <span style="color: #333333">=</span> status<span style="color: #333333">.</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;-NeXt-&quot;</span><span style="color: #333333">);</span>
+				
+				
+						<span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i<span style="color: #333333">&lt;</span>records<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++</span> <span style="color: #333333">){</span>
+							System<span style="color: #333333">.</span><span style="color: #0000CC">out</span><span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]);</span>
+							results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;td&gt;&lt;center&gt;&quot;</span><span style="color: #333333">+</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]+</span><span style="background-color: #fff0f0">&quot;&lt;/center&gt;&lt;/td&gt;&quot;</span><span style="color: #333333">;</span>
+						<span style="color: #333333">}</span>
+				
+						results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;tr&gt;&lt;/table&gt;&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">;</span>
+				
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span>results<span style="color: #333333">);</span>
+				
+					<span style="color: #333333">}</span>
+					System<span style="color: #333333">.</span><span style="color: #0000CC">out</span><span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;DISPLAY&quot;</span><span style="color: #333333">);</span>
+				<span style="color: #008800; font-weight: bold">break</span><span style="color: #333333">;</span>
+				
+				<span style="color: #008800; font-weight: bold">case</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Update&quot;</span><span style="color: #333333">):</span>
+					team <span style="color: #333333">=</span> textFieldTeam<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					player <span style="color: #333333">=</span> textFieldPlayer<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					goals <span style="color: #333333">=</span> textFieldGoals<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					assists <span style="color: #333333">=</span> textFieldAssists<span style="color: #333333">.</span><span style="color: #0000CC">getText</span><span style="color: #333333">().</span><span style="color: #0000CC">trim</span><span style="color: #333333">();</span>
+					request1 <span style="color: #333333">=</span> buttonGroup<span style="color: #333333">.</span><span style="color: #0000CC">getSelection</span><span style="color: #333333">().</span><span style="color: #0000CC">getActionCommand</span><span style="color: #333333">();</span>
+			
+					<span style="color: #888888">//Dont add data if a field is empty</span>
+					<span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>player<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()&lt;</span><span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #333333">||</span> team<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()&lt;</span><span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #333333">||</span> goals<span style="color: #333333">.</span><span style="color: #0000CC">isEmpty</span><span style="color: #333333">()</span> <span style="color: #333333">||</span> assists<span style="color: #333333">.</span><span style="color: #0000CC">isEmpty</span><span style="color: #333333">()){</span>
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;Could not Display&lt;/h1&gt;&lt;br&gt;&lt;h2&gt;Make sure you enter data into all fields&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">);</span>
+					<span style="color: #333333">}</span><span style="color: #008800; font-weight: bold">else</span><span style="color: #333333">{</span>
+			
+						status <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ServletConnect<span style="color: #333333">().</span><span style="color: #0000CC">updateDataServlet</span><span style="color: #333333">(</span>team<span style="color: #333333">,</span> player<span style="color: #333333">,</span> goals<span style="color: #333333">,</span> assists<span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;Update&quot;</span><span style="color: #333333">);</span>
+						results <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h2&gt;Updated Database, New values are: &lt;table style=\&quot;width:100%\&quot;&gt;&lt;tr&gt;&lt;th&gt;Team&lt;/th&gt;&lt;th&gt;Player&lt;/th&gt;&lt;th&gt;Goals&lt;/th&gt;&lt;th&gt;Assists&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&quot;</span><span style="color: #333333">;</span>
+						records <span style="color: #333333">=</span> status<span style="color: #333333">.</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;-NeXt-&quot;</span><span style="color: #333333">);</span>
+			
+			
+						<span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i<span style="color: #333333">&lt;</span>records<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++</span> <span style="color: #333333">){</span>
+							System<span style="color: #333333">.</span><span style="color: #0000CC">out</span><span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]);</span>
+							results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;td&gt;&lt;center&gt;&quot;</span><span style="color: #333333">+</span>records<span style="color: #333333">[</span>i<span style="color: #333333">]+</span><span style="background-color: #fff0f0">&quot;&lt;/center&gt;&lt;/td&gt;&quot;</span><span style="color: #333333">;</span>
+						<span style="color: #333333">}</span>
+			
+						results <span style="color: #333333">=</span> results <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;&lt;tr&gt;&lt;/table&gt;&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">;</span>
+			
+						textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span>results<span style="color: #333333">);</span>
+			
+					<span style="color: #333333">}</span>
+					System<span style="color: #333333">.</span><span style="color: #0000CC">out</span><span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;UPDATE&quot;</span><span style="color: #333333">);</span>
+				<span style="color: #008800; font-weight: bold">break</span><span style="color: #333333">;</span>
+				
+				<span style="color: #008800; font-weight: bold">default</span><span style="color: #333333">:</span>
+					textPane<span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;&lt;html&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;Error&lt;/h1&gt;&lt;br&gt;&lt;h2&gt;Make sure you select a function&lt;/h2&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span style="color: #333333">);</span>
+					
+				
+				<span style="color: #333333">}</span>
+			
+			
+				
+				
+			<span style="color: #333333">}</span>
+		<span style="color: #333333">});</span>
+		
+		
+		
+		
+		
+		
+	<span style="color: #333333">}</span>
+<span style="color: #333333">}</span>
+</pre></td></tr></table></div>
+
+</body>
+</html>
