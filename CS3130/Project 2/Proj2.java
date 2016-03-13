@@ -18,6 +18,7 @@ public class Proj2 {
         int SecondSize = 10000;
         int ThirdSize = 100000;
 
+        //Initialize arrays
         int[] SortedArraySmall = new int[FirstSize];
         int[] SortedArrayMid = new int[SecondSize];
         int[] SortedArrayLarge = new int[ThirdSize];
