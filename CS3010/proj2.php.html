@@ -1,0 +1,34 @@
+<!--<?xml version = "1.0" encoding = "utf-8"?>-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
+    "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+
+<html xmlns = "http://www.w3.org/1999/xhtml">
+	<head><title>Process proj2.html</title></head>
+
+	<body>
+		<?php
+
+		//Get data values-
+		$widge1 = $_POST["widge1"];
+		$widge2 = $_POST["widge2"];
+		$widge3 = $_POST["widge3"];
+		$state = $_POST["state"];
+
+		//Set to 0 if blank
+		if ($widge1 == "") $widge1 = 0;
+		if ($widge2 == "") $widge2 = 0;
+		if ($widge3 == "") $widge3 = 0;
+
+		//Compute cost
+		$widge1_cost = 12.45 * widge1;
+		$widge2_cost = 15.34 * widge2;
+		$widge3_cost = 28.99 * widge3;
+		$total_cost = $widge1_cost + $widge2_cost + $widge3_cost;
+		$total_widgets = $widge1 + $widge2 + $widge3;
+
+		?>
+
+
+
+	</body>
+</html>
