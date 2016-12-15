@@ -1,0 +1,3 @@
+Value of N = 42
+./logutil: Time: 1473358632000000000 Error: No options were entered. Program segfaulted
+

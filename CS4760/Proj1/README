@@ -1,0 +1,31 @@
+Brady Kedge
+CS4760 - Operating Systems - Section 001
+Mark Hauschild
+Project 1
+9/6/16
+----------------------------------------
+
+About
+-----
+This project is the implementation of a logging utility which logs custom error messages into a text file
+using queues to create a log. The main.c file acts as a driver which calls the function logError() which
+in turn calls the functions in loglib.c to build the log. Time was converted to nanoseconds by 
+multiplying time in seconds by 1 billion. RCS was used for version control and previous 
+versions can be found in the RCS folder.
+
+--------------
+How to Compile
+--------------
+Run 'make' or compile with gcc 'executable' main.c loglib.c
+
+----------
+How to Run
+----------
+Run the program with ./logutil or name of executable if it is changed by the user
+
+----------------------
+Command line arguments
+----------------------
+-h and -help: Brings up a list of commands
+-n 'arg': will change the value of the variable for n and log it in the log file
+-l 'filename': changes the name of the logfile

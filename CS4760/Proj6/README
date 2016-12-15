@@ -1,0 +1,42 @@
+Brady Kedge
+CS4760 - Operating Systems - Section 001
+Mark Hauschild
+Project 6
+12/11/16
+----------------------------------------
+
+-----
+About
+-----
+This project is intended to simulate memory and paging in an operating system. It starts by setting up shared memory
+and forking every second or so. It uses a bit vector to check if the max number of processes has been reached. Things
+I still need to do are implement the paging algorithm and make the user request data.
+
+Problems:
+I was unable to implement the paging and LRU algorithm. I had problems with race conditions so I dont think I was
+protecting my shared memory correctly. I have reverted the project to its current most working state to try and salvage
+at least some points out of it.
+
+
+
+--------------
+How to Compile
+--------------
+Run 'make' or compile with gcc -o 'oss oss.c' and gcc -o 'user user.c'
+
+'make clean' will remove all object files, executables, and log files. If make not run first then
+make clean will produce an error that it could not find log.out
+
+(I used append to write to log file so it is recommended that you run make clean if you want a fresh log file)
+
+----------
+How to Run
+----------
+Run the program with ./oss or name of executable if it is changed by the user
+
+----------------------
+Command line arguments
+----------------------
+-h and -help: Brings up a list of commands
+-t: Sets the number of seconds program will run until it times out and terminates
+-s: sets number of processes to run

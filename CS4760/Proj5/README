@@ -1,0 +1,48 @@
+Brady Kedge
+CS4760 - Operating Systems - Section 001
+Mark Hauschild
+Project 5
+11/29/16
+----------------------------------------
+
+-----
+About
+-----
+This project simulates resource allocation and deadlock detection. The oss spawns processes and creates resource
+descriptors. The user process will ask oss for resources which it then detects if it should allow for the resource to be granted
+or not. The clock only spawns a process around every second. User processes will run for at least 1 second simulated time
+at which they will check randomly if they need to be terminated. If so they release their resources and exit. Message passing
+was used to send back to OSS what location of the PID array needs resources and then the resource descriptor was searched on
+using this location. When this request is received the OSS checks if the resource has enough availability to allocate what
+the user is requesting. If it does, the OSS grants the request and lowers the total availabilty of the resource. The user
+will also randomly decide whether or not to release some resource as well. When it does this it sets its release parameter
+and then OSS picks up on this and de-allocates the resource and re-adds it to the resources total availability.
+
+Problems:
+
+I had some trouble getting the deadlock detection algorithm working. Right now the program allocates resources but
+does not release often which is leading to a deadlock. Sometimes a fork error will happen. I'm not sure why but I think it has to do
+with processes spinning and not releasing. I have tried to put in a safety mechanism in which in case of a fork failure I kill all
+processes and quit the program but I'm not sure if it is working 100%.
+
+
+--------------
+How to Compile
+--------------
+Run 'make' or compile with gcc -o 'oss oss.c' and gcc -o 'user user.c'
+
+'make clean' will remove all object files, executables, and log files. If make not run first then
+make clean will produce an error that it could not find log.out
+
+(I used append to write to log file so it is recommended that you run make clean if you want a fresh log file)
+
+----------
+How to Run
+----------
+Run the program with ./oss or name of executable if it is changed by the user
+
+----------------------
+Command line arguments
+----------------------
+-h and -help: Brings up a list of commands
+-t: Sets the number of seconds program will run until it times out and terminates

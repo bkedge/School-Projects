@@ -1,0 +1,39 @@
+Brady Kedge
+CS4760 - Operating Systems - Section 001
+Mark Hauschild
+Project 3
+10/19/16
+----------------------------------------
+
+About
+-----
+This project simulates a basic clock using message queues. The critical section is enforced using
+message queues. The main oss program spawns off a certain number of user processes. In each user
+the process generates a random duration to run. It then enters a crtical section if not blocked.
+If it's duration is not up it cedes the critical section and tries to re-enter the critical section.
+The oss proram will terminate when 2 simulated second have passed or 100 processes have been run, or if
+a fork failure happens. The program prints times that the user terminated at and what time they reached.
+Standard output displays general information like total number of processes and when a process dies or cedes
+its critical section.
+
+--------------
+How to Compile
+--------------
+Run 'make' or compile with gcc -o 'oss oss.c' and gcc -o 'user user.c'
+
+'make clean' will remove all object files, executables, and log file test.out. If make not run first then
+make clean will produce an error that it could not find test.out
+
+----------
+How to Run
+----------
+Run the program with ./oss or name of executable if it is changed by the user. Will not work if user
+executable is a different name other than "user"
+
+----------------------
+Command line arguments
+----------------------
+-h and -help: Brings up a list of commands
+-s: Changes the number of user processes to run. Hoare is limited to 20 so will fail immediatley on anything over 20
+-l: Sets the logfile to output to specified name
+-t: Sets the number of seconds program will run until it times out and terminates

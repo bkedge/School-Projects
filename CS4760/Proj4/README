@@ -1,0 +1,54 @@
+Brady Kedge
+CS4760 - Operating Systems - Section 001
+Mark Hauschild
+Project 4
+11/8/16
+----------------------------------------
+
+-----
+About
+-----
+This project simulates a basic OS scheduler. It is implemented with multiple queues. Queue 0 has the highest priority
+and will never move a process down. OSS generates a new process every second and dispatches it. The process has a
+random chance to be high priority and if not it will be placed in queue 1. Any process not finishing its quantum is moved
+down a queue. The program uses spinlocks to keep processes from running their clock concurrently. The program will run for
+20 real seconds by default or until 25 simulated seconds have passed. Scheduling was done by sending a message with the users
+PID back to OSS and if it is done it sends back -1.
+
+Problems:
+
+Sometimes the queues will fill up and stop executing. This also causes a fork failure.
+I have tried to debug this but ran out of time before I needed to submit. I think it can be fixed with some extra tweaking of
+parameters.
+
+--------------
+How to Compile
+--------------
+Run 'make' or compile with gcc -o 'oss oss.c' and gcc -o 'user user.c'
+
+'make clean' will remove all object files, executables, and log files. If make not run first then
+make clean will produce an error that it could not find log.out
+
+----------
+How to Run
+----------
+Run the program with ./oss or name of executable if it is changed by the user
+
+----------------------
+Command line arguments
+----------------------
+-h and -help: Brings up a list of commands
+-t: Sets the number of seconds program will run until it times out and terminates
+
+----------
+Parameters
+----------
+queue0slice = 25000000;
+
+queue1slice = 10000000;
+
+queue2slice = 20000000;
+
+queue3slice = 40000000;
+
+MaxRunTime = 250000000;

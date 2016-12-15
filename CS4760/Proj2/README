@@ -1,0 +1,40 @@
+Brady Kedge
+CS4760 - Operating Systems - Section 001
+Mark Hauschild
+Project 2
+10/3/16
+----------------------------------------
+
+About
+-----
+This project takes command line arguments and then forks and executes a determined number of slave
+processes which then use the peterson algorithm for multiple processes from our class notes to
+increment a number in shared memory and write to a file. The program will terminate after a determined
+number of seconds or if CTRL-C is invoked. The program does not allow over 19 child processes to spawn
+thus keeping the total process count as 20 including master process. srand() is seeded at the
+beginning of every child process with time + the PID of the current process. This is to give
+the randomness a little extra bump from the time seed. The program also prints how long it is Sleeping
+in the critical section. Memory management was created using failsafes and error messages for failure
+to allocate or Deallocate memory. Memory is freed at the end just in case. 
+
+--------------
+How to Compile
+--------------
+Run 'make' or compile with gcc -o 'master master.c' and gcc -o 'slave slave.c'
+
+'make clean' will remove all object files, executables, and log files. If make not run first then
+make clean will produce an error that it could not find test.out
+
+----------
+How to Run
+----------
+Run the program with ./master or name of executable if it is changed by the user
+
+----------------------
+Command line arguments
+----------------------
+-h and -help: Brings up a list of commands
+-s: Changes the number of slave processes to run
+-l: Sets the logfile to output to
+-t: Sets the number of seconds program will run until it times out and terminates
+-i: sets the number of writes to the file a process will do before it stops.
